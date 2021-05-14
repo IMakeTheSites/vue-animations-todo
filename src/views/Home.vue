@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <Toast v-if="showToast" />
+    <transition name="toast">
+      <Toast v-if="showToast" />
+    </transition>
     <Todos @badValue="triggerToast" />
   </div>
 </template>
@@ -14,7 +16,6 @@ export default {
   components: { Toast, Todos },
   setup() {
     const showToast = ref(false);
-
     const triggerToast = () => {
       showToast.value = true;
       setTimeout(() => (showToast.value = false), 3000);
@@ -25,4 +26,56 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/*enter classes */
+/* .toast-enter-from {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+.toast-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+} */
+.toast-enter-active {
+  /* transition: all 0.3s ease; */
+  animation: wobble 0.5s ease;
+}
+
+/*leave classes */
+.toast-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+.toast-leave-active {
+  transition: all 0.3s ease;
+}
+@keyframes wobble {
+  0% {
+    transform: translateY(-60px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: translateX(8px);
+  }
+  70% {
+    transform: translateX(-8px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+  90% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+</style>
